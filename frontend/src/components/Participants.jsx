@@ -6,7 +6,7 @@ export default function Participants(props) {
 
     useEffect(() => {
         if (!slideIn) {
-            setTimeout(() => props.setOpen(false), 250);
+            setTimeout(() => props.setOpen(false), 1000);
         }
     }, [slideIn]);
 
@@ -19,22 +19,22 @@ export default function Participants(props) {
             <Grid container spacing={5} sx={{
                 width: '772px',
             }}>
-                <Slide in={slideIn} direction="right" timeout={{enter: 500, exit: 250}}>
+                <Slide in={slideIn} direction="right" timeout={{enter: 1000, exit: 1000}}>
                     <Grid item xs={6}>
                         <Item participant={props.participants[0]}/>
                     </Grid>
                 </Slide>
-                <Slide in={slideIn} direction="left" timeout={{enter: 500, exit: 250}}>
+                <Slide in={slideIn} direction="left" timeout={{enter: 1000, exit: 1000}}>
                     <Grid item xs={6}>
                         <Item participant={props.participants[1]}/>
                     </Grid>
                 </Slide>
-                <Slide in={slideIn} direction="right" timeout={{enter: 500, exit: 250}}>
+                <Slide in={slideIn} direction="right" timeout={{enter: 1000, exit: 1000}}>
                     <Grid item xs={6}>
                         <Item participant={props.participants[2]}/>
                     </Grid>
                 </Slide>
-                <Slide in={slideIn} direction="left" timeout={{enter: 500, exit: 250}}>
+                <Slide in={slideIn} direction="left" timeout={{enter: 1000, exit: 1000}}>
                     <Grid item xs={6}>
                         <Item participant={props.participants[3]}/>
                     </Grid>
@@ -71,7 +71,8 @@ function Item(props) {
         <Box sx={{
             animation: determineGlow(props.participant.school),
         }}>
-            <Avatar alt="Travis Howard" src={"img/avatars/" + props.participant.name + ".jpg"} variant="square"
+            <Avatar alt={props.participant.name} src={"img/students/" + props.participant.name + ".jpg"}
+                    variant="square"
                     sx={{
                         width: 350,
                         height: 350,

@@ -1,55 +1,54 @@
 import Scroll from "../img/scroll.png";
 import Stamp from "../img/stamp.png";
-import {Typography, Box, Button, Table, TableBody, TableCell, TableHead, TableRow, Fade} from "@mui/material";
+import {Typography, Box, Button, Table, TableBody, TableCell, TableHead, TableRow, Fade, Grid} from "@mui/material";
 import {useNavigate} from "react-router-dom";
 import {useEffect, useRef, useState} from "react";
 import Participants from "./Participants";
 
-const hogwarts = [
-    'Гарри Поттер',
-    'Седрик Диггори',
-    'Рон Уизли',
-    'Гермиона Грейнджер',
-    'Драко Малфой'
-];
-
-const beauxbatons = [
-    'Флёр Делакур',
-    'Николас Фламель',
-    'Орели Дюмон',
-    'Селин Кастильон',
-    'Винсент де Трефле-Пике'
-];
-
-const durmstrang = [
-    'Виктор Крам',
-    'Геллерт Грин-де-Вальд',
-    'Игорь Каркаров',
-    'Баглан Уэллнелли',
-    'Груффыд Уэллнелли'
-];
-
-const getRows = () => {
-    const result = [];
-    for (let i = 0; i < 5; i++) {
-        result.push([hogwarts[i], beauxbatons[i], durmstrang[i]]);
-    }
-    return result;
-}
-
-const participants = [
-    {name: "Гарри Поттер", school: "Хогвартс", points: 11},
-    {name: "Флёр Делакур", school: "Шармбатон", points: 0},
-    {name: "Виктор Крам", school: "Дурмстранг", points: 205},
-    {name: "Седрик Диггори", school: "Хогвартс", points: 56},
-];
-
-
-export default function Start() {
+export default function Start(props) {
     const navigate = useNavigate();
+    const [students, setStudents] = useState([]);
     const [open, setOpen] = useState(false);
     const [fadeIn, setFadeIn] = useState(true);
     const openRef = useRef(null);
+
+    const handleOpen = () => {
+        fetch('http://localhost/api/participants/set_random_sacrifices').then((response) => response.json()).then((json) => {
+            json.forEach((participant) => participant.school = students.find((student) => {
+                return student.name === participant.name
+            }).school);
+            props.setParticipants(json);
+        });
+    }
+
+    const getRows = () => {
+        let rows = [];
+        let studentsBySchool = {["Хогвартс"]: [], ["Шармбатон"]: [], ["Дурмстранг"]: []};
+        students.forEach((student) => studentsBySchool[student.school].push(student));
+        for (let i = 0; i < 5; i++) {
+            rows.push([studentsBySchool["Хогвартс"][i], studentsBySchool["Шармбатон"][i], studentsBySchool["Дурмстранг"][i]]);
+        }
+        return rows;
+    }
+
+    useEffect(() => {
+        if (students.length === 0) {
+            fetch('http://localhost/api/students/get').then((response) => response.json()).then((json) => setStudents(json));
+        } else {
+            fetch('http://localhost/api/participants/generate').then((response) => response.json()).then((json) => {
+                json.forEach((participant) => students.find((student) => {
+                    return student.name === participant.name
+                }).isParticipant = true);
+                props.setParticipants(json);
+            });
+        }
+    }, [students]);
+
+    useEffect(() => {
+        if (props.participants.length === 4) {
+            setOpen(true);
+        }
+    }, [props.participants]);
 
     useEffect(() => {
         if (openRef.current) {
@@ -60,13 +59,13 @@ export default function Start() {
 
     useEffect(() => {
         if (!fadeIn) {
-            setTimeout(() => navigate("/stage1"), 250);
+            setTimeout(() => navigate("/stage1"), 1000);
         }
     }, [fadeIn]);
 
     return (
         <>
-            <Fade in={fadeIn} timeout={{enter: 500, exit: 500}}>
+            <Fade in={fadeIn} timeout={{enter: 1000, exit: 1000}}>
                 <Box sx={{
                     width: '100%',
                     height: '100%',
@@ -119,13 +118,28 @@ export default function Start() {
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
-                                        {getRows().map((row, index) => (
+                                        {students.length > 0 && props.participants.length > 0 ? getRows().map((row, index) => (
                                             <TableRow key={index}>
-                                                <TableCell>{row[0]}</TableCell>
-                                                <TableCell>{row[1]}</TableCell>
-                                                <TableCell>{row[2]}</TableCell>
+                                                <TableCell>
+                                                    <Grid container direction="row" justifyContent="space-between">
+                                                        <Grid item>{row[0].name}</Grid>
+                                                        <Grid item>{row[0].isParticipant ? "✅" : ""}</Grid>
+                                                    </Grid>
+                                                </TableCell>
+                                                <TableCell>
+                                                    <Grid container direction="row" justifyContent="space-between">
+                                                        <Grid item>{row[1].name}</Grid>
+                                                        <Grid item>{row[1].isParticipant ? "✅" : ""}</Grid>
+                                                    </Grid>
+                                                </TableCell>
+                                                <TableCell>
+                                                    <Grid container direction="row" justifyContent="space-between">
+                                                        <Grid item>{row[2].name}</Grid>
+                                                        <Grid item>{row[2].isParticipant ? "✅" : ""}</Grid>
+                                                    </Grid>
+                                                </TableCell>
                                             </TableRow>
-                                        ))}
+                                        )) : null}
                                     </TableBody>
                                 </Table>
                             </Box>
@@ -134,7 +148,7 @@ export default function Start() {
                                 justifyContent: 'right',
                                 height: '12%',
                             }}>
-                                <Button onClick={() => setOpen(true)} sx={{
+                                <Button onClick={handleOpen} sx={{
                                     backgroundImage: `url(${Stamp})`,
                                     backgroundSize: '100% 100%',
                                     color: '#7f120c',
@@ -152,7 +166,8 @@ export default function Start() {
                     </Box>
                 </Box>
             </Fade>
-            <Participants open={open} setOpen={setOpen} participants={participants}/>
+            {props.participants.length > 0 ?
+                <Participants open={open} setOpen={setOpen} participants={props.participants}/> : null}
         </>
     );
 }

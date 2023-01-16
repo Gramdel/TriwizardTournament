@@ -27,13 +27,13 @@ export default function Stage1() {
 
     useEffect(() => {
         if (!fadeIn) {
-            setTimeout(() => navigate("/stage2"), 250);
+            setTimeout(() => navigate("/stage2"), 1000);
         }
     }, [fadeIn]);
 
     return (
         <>
-            <Fade in={fadeIn} timeout={{enter: 500, exit: 500}}>
+            <Fade in={fadeIn} timeout={{enter: 1000, exit: 1000}}>
                 <Box sx={{
                     width: '100%',
                     height: '100%',
