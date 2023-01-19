@@ -56,3 +56,36 @@ html, body, #root {
         filter: drop-shadow(0 0 2px #ccb35d) drop-shadow(0 0 4px #d9aa29) drop-shadow(0 0 6px #ffdb00);
     }
 }
+
+@keyframes magical-glow-versus {
+    to {
+        filter: drop-shadow(0 0 2px #e58a53) drop-shadow(0 0 4px #f37c13) drop-shadow(0 0 8px #fb3f18);
+    }
+}
+
+@keyframes magical-glow-winner {
+    from {
+        filter: drop-shadow(0 0 1px #fdfaa4) drop-shadow(0 0 3px #ffeb00) drop-shadow(0 0 5px #ffb700) drop-shadow(0 0 6px #ec1819) drop-shadow(0 0 7px #5e262b);
+    }
+    to {
+        filter: drop-shadow(0 0 2px #fdfaa4) drop-shadow(0 0 4px #ffeb00) drop-shadow(0 0 6px #ffb700) drop-shadow(0 0 7px #ec1819) drop-shadow(0 0 8px #5e262b);
+    }
+}
+
+@keyframes sink-water {
+    from {
+        background-position: bottom 0 center;
+    }
+    to {
+        background-position: bottom -275px center;
+    }
+}
+
+@keyframes magical-glow-fail {
+    from {
+        filter: drop-shadow(0 0 1px #ef8d8d) drop-shadow(0 0 2px #ff1818) drop-shadow(0 0 3px #a90a0a);
+    }
+    to {
+        filter: drop-shadow(0 0 2px #ef8d8d) drop-shadow(0 0 4px #ff1818) drop-shadow(0 0 6px #a90a0a);
+    }
+}

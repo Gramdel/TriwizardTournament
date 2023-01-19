@@ -13,10 +13,12 @@ export default function Start(props) {
     const openRef = useRef(null);
 
     const handleOpen = () => {
-        fetch('http://localhost/api/participants/set_random_sacrifices').then((response) => response.json()).then((json) => {
-            json.forEach((participant) => participant.school = students.find((student) => {
+        fetch('http://localhost/api/participants/set_random_sacrifices', {method: "POST"}).then((response) => response.json()).then((json) => {
+            let schools = [];
+            json.forEach((participant) => schools.push(students.find((student) => {
                 return student.name === participant.name
-            }).school);
+            }).school));
+            props.setSchools(schools);
             props.setParticipants(json);
         });
     }
@@ -35,7 +37,7 @@ export default function Start(props) {
         if (students.length === 0) {
             fetch('http://localhost/api/students/get').then((response) => response.json()).then((json) => setStudents(json));
         } else {
-            fetch('http://localhost/api/participants/generate').then((response) => response.json()).then((json) => {
+            fetch('http://localhost/api/participants/generate', {method: "POST"}).then((response) => response.json()).then((json) => {
                 json.forEach((participant) => students.find((student) => {
                     return student.name === participant.name
                 }).isParticipant = true);
@@ -166,8 +168,8 @@ export default function Start(props) {
                     </Box>
                 </Box>
             </Fade>
-            {props.participants.length > 0 ?
-                <Participants open={open} setOpen={setOpen} participants={props.participants}/> : null}
+            {props.participants && props.schools && props.participants.length === 4 && props.schools.length === 4 ?
+                <Participants {...props} open={open} setOpen={setOpen} /> : null}
         </>
     );
 }

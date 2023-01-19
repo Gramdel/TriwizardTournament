@@ -18,6 +18,11 @@ public interface ParticipantRepository extends JpaRepository<Participant, String
 
     @Modifying
     @Transactional
-    @Query(value = "select * from set_random_sacrifices()", nativeQuery = true)
+    @Query(value = "select * from set_random_sacrifices() order by name", nativeQuery = true)
     ArrayList<Participant> setRandomSacrifices();
+
+    @Modifying
+    @Transactional
+    @Query(value = "update Participant p set p.points = ?1 where p.name = ?2")
+    int updateParticipantPoints(int points, String name);
 }

@@ -21,22 +21,22 @@ export default function Participants(props) {
             }}>
                 <Slide in={slideIn} direction="right" timeout={{enter: 1000, exit: 1000}}>
                     <Grid item xs={6}>
-                        <Item participant={props.participants[0]}/>
+                        <Item participants={props.participants} schools={props.schools} index={0}/>
                     </Grid>
                 </Slide>
                 <Slide in={slideIn} direction="left" timeout={{enter: 1000, exit: 1000}}>
                     <Grid item xs={6}>
-                        <Item participant={props.participants[1]}/>
+                        <Item participants={props.participants} schools={props.schools} index={1}/>
                     </Grid>
                 </Slide>
                 <Slide in={slideIn} direction="right" timeout={{enter: 1000, exit: 1000}}>
                     <Grid item xs={6}>
-                        <Item participant={props.participants[2]}/>
+                        <Item participants={props.participants} schools={props.schools} index={2}/>
                     </Grid>
                 </Slide>
                 <Slide in={slideIn} direction="left" timeout={{enter: 1000, exit: 1000}}>
                     <Grid item xs={6}>
-                        <Item participant={props.participants[3]}/>
+                        <Item participants={props.participants} schools={props.schools} index={3}/>
                     </Grid>
                 </Slide>
             </Grid>
@@ -44,34 +44,32 @@ export default function Participants(props) {
     );
 }
 
-const determineColor = (school) => {
+const getAnimationAndColor = (school) => {
     switch (school) {
         case "Хогвартс":
-            return '#5d4e16';
+            return {
+                animation: 'magical-glow-hogwarts 2s infinite alternate',
+                color: '#5d4e16'
+            };
         case "Шармбатон":
-            return '#1a3f8a';
+            return {
+                animation: 'magical-glow-beauxbatons 2s infinite alternate',
+                color: '#1a3f8a'
+            };
         case "Дурмстранг":
-            return '#257007';
-    }
-}
-
-const determineGlow = (school) => {
-    switch (school) {
-        case "Хогвартс":
-            return 'magical-glow-hogwarts 2s infinite alternate';
-        case "Шармбатон":
-            return 'magical-glow-beauxbatons 2s infinite alternate';
-        case "Дурмстранг":
-            return 'magical-glow-durmstrang 2s infinite alternate';
+            return {
+                animation: 'magical-glow-durmstrang 2s infinite alternate',
+                color: '#257007'
+            };
     }
 }
 
 function Item(props) {
     return (
         <Box sx={{
-            animation: determineGlow(props.participant.school),
+            ...getAnimationAndColor(props.schools[props.index])
         }}>
-            <Avatar alt={props.participant.name} src={"img/students/" + props.participant.name + ".jpg"}
+            <Avatar alt={props.participants[props.index].name} src={"img/students/" + props.participants[props.index].name + ".jpg"}
                     variant="square"
                     sx={{
                         width: 350,
@@ -80,7 +78,7 @@ function Item(props) {
                     }}
             />
             <Box sx={{
-                backgroundImage: `url(img/schools/${props.participant.school}.png)`,
+                backgroundImage: `url(img/schools/${props.schools[props.index]}.png)`,
                 backgroundSize: '100% 100%',
                 width: '100px',
                 height: '100px',
@@ -93,13 +91,12 @@ function Item(props) {
                 fontFamily: 'Harry Potter',
                 fontWeight: 'bold',
                 letterSpacing: '0.2rem',
-                color: determineColor(props.participant.school),
-                animation: determineGlow(props.participant.school),
                 position: 'absolute',
                 top: '10px',
                 right: '10px',
+                ...getAnimationAndColor(props.schools[props.index])
             }}>
-                {props.participant.points}
+                {props.participants[props.index].points}
             </Typography>
             <Typography sx={{
                 textAlign: 'center',
@@ -107,13 +104,12 @@ function Item(props) {
                 fontWeight: 'bold',
                 fontSize: '2.7rem',
                 letterSpacing: '0.2rem',
-                color: determineColor(props.participant.school),
-                animation: determineGlow(props.participant.school),
                 position: 'absolute',
                 bottom: 0,
                 width: '100%',
+                ...getAnimationAndColor(props.schools[props.index])
             }}>
-                {props.participant.name}
+                {props.participants[props.index].name}
             </Typography>
         </Box>
     );
