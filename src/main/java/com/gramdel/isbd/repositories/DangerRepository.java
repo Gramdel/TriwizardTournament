@@ -13,7 +13,7 @@ import java.util.ArrayList;
 public interface DangerRepository extends JpaRepository<Danger, String> {
     @Modifying
     @Transactional
-    @Query(value = "select * from danger where danger.name = 'Гриндилоу (морской чёрт)' " +
+    @Query(value = "select * from danger where danger.name = 'Гриндилоу' " +
             "or danger.name = 'Русалка' or danger.name = 'Тритон'", nativeQuery = true)
     ArrayList<Danger> getWaterDanger();
 

@@ -30,6 +30,15 @@ html, body, #root {
     }
 }
 
+@keyframes big-magical-glow-green {
+    from {
+        filter: drop-shadow(0 0 2px #a3ef8d) drop-shadow(0 0 7px #49ff18) drop-shadow(0 0 20px #38a90a);
+    }
+    to {
+        filter: drop-shadow(0 0 5px #a3ef8d) drop-shadow(0 0 10px #49ff18) drop-shadow(0 0 25px #38a90a);
+    }
+}
+
 @keyframes magical-glow-beauxbatons {
     from {
         filter: drop-shadow(0 0 1px #00B5F7) drop-shadow(0 0 2px #0094F7) drop-shadow(0 0 3px #3072E4);

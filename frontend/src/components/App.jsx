@@ -4,12 +4,14 @@ import Start from "./Start"
 import Stage1 from "./Stage1";
 import Stage2 from "./Stage2";
 import Stage3 from "./Stage3";
+import Winner from "./Winner";
 import {useState} from "react";
 import {SnackbarProvider} from "notistack";
 
 export default function App() {
     const [participants, setParticipants] = useState([]);
     const [schools, setSchools] = useState([]);
+    const [winner, setWinner] = useState();
 
     const updateParticipants = () => {
         fetch('http://localhost/api/participants/update', {
@@ -49,7 +51,10 @@ export default function App() {
                         <Stage2 {...participantProps}/>
                     }/>
                     <Route path="/stage3" element={
-                        <Stage3 {...participantProps}/>
+                        <Stage3 {...participantProps} winner={winner} setWinner={setWinner}/>
+                    }/>
+                    <Route path="/winner" element={
+                        <Winner {...participantProps} winner={winner}/>
                     }/>
                 </Routes>
             </MemoryRouter>

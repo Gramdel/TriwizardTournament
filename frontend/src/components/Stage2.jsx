@@ -87,7 +87,9 @@ export default function Stage2(props) {
                         <>
                             <Avatar alt={participant.name} src={"img/students/" + participant.name + ".jpg"}/>&emsp;
                             <b>{participant.name}</b>&nbsp;встречает опасность&nbsp;
-                            <b>{dangers[i].name}</b>!
+                            <b>{dangers[i].name}</b>!&emsp;
+                            <Avatar alt={dangers[i].name}
+                                    src={"img/dangers/" + dangers[i].name + ".jpg"}/>
                         </>,
                     variant: "warning"
                 });
@@ -97,7 +99,9 @@ export default function Stage2(props) {
                             <>
                                 <Avatar alt={participant.name} src={"img/students/" + participant.name + ".jpg"}/>&emsp;
                                 <b>{participant.name}</b>&nbsp;преодолевает опасность&nbsp;
-                                <b>{dangers[i].name}</b>!
+                                <b>{dangers[i].name}</b>!&emsp;
+                                <Avatar alt={dangers[i].name}
+                                        src={"img/dangers/" + dangers[i].name + ".jpg"}/>
                             </>,
                         variant: "info"
                     });
@@ -107,7 +111,9 @@ export default function Stage2(props) {
                             <>
                                 <Avatar alt={participant.name} src={"img/students/" + participant.name + ".jpg"}/>&emsp;
                                 <b>{participant.name}</b>&nbsp;не преодолевает опасность&nbsp;
-                                <b>{dangers[i].name}</b>&nbsp;и выбывает!
+                                <b>{dangers[i].name}</b>&nbsp;и выбывает!&emsp;
+                                <Avatar alt={dangers[i].name}
+                                        src={"img/dangers/" + dangers[i].name + ".jpg"}/>
                             </>,
                         variant: "error"
                     });
